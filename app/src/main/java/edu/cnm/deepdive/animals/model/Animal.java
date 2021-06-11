@@ -1,4 +1,4 @@
-package edu.cnm.deepdive.animals;
+package edu.cnm.deepdive.animals.model;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
@@ -9,8 +9,8 @@ public class Animal {
     @Expose
     private String name;
 
+    @Expose
     @SerializedName("image")
-
     private String imageUrl;
 
     public String getName() {
@@ -29,20 +29,6 @@ public class Animal {
         this.imageUrl = imageUrl;
     }
 
-
-    static class Taxonomy {
-
-        @Expose
-        private String kingdom;
-
-        @Expose
-        private String order;
-
-        @Expose
-        private String family;
-
-
-    }
 
 
 }
