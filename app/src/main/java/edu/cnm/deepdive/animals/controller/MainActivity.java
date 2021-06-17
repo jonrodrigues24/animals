@@ -13,6 +13,7 @@ import edu.cnm.deepdive.animals.model.Animal;
 import edu.cnm.deepdive.animals.service.WebServiceProxy;
 import java.io.IOException;
 import java.util.List;
+import java.util.Random;
 import retrofit2.Response;
 
 public class MainActivity extends AppCompatActivity {
@@ -53,8 +54,17 @@ public class MainActivity extends AppCompatActivity {
       try {
         Response<List<Animal>> response = WebServiceProxy.getInstance().getAnimals(BuildConfig.API_KEY).execute();
         if(response.isSuccessful()) {
+          List<Animal> animals = response.body();
+          Random rng = new Random();
+          String url = animals.get(rng.nextInt(animals.size())).getImageUrl();
 
-          Log.d(getClass().getName(), response.message());
+          runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+            contentView.loadUrl(url);
+            }
+          });
+
         } else {
 
           Log.e(getClass().getName(), response.message());
