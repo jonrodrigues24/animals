@@ -5,6 +5,8 @@ import android.webkit.WebResourceRequest;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.ArrayAdapter;
+import android.widget.Spinner;
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import edu.cnm.deepdive.animals.BuildConfig;
@@ -16,20 +18,26 @@ import java.util.List;
 import java.util.Random;
 import retrofit2.Response;
 
+
+//the controller
 public class MainActivity extends AppCompatActivity {
 
   private WebView contentView;
+  private Spinner animalSelector;
 
   @Override
+
+  //immediately displays app is open
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_main);
     contentView = findViewById(R.id.content_view);
+    animalSelector = findViewById(R.id.animal_selector);
     setupWebView();
 
 
   }
-
+//web view settings to fit device
   private void setupWebView() {
 
     contentView.setWebViewClient(new WebViewClient() {
@@ -46,7 +54,7 @@ public class MainActivity extends AppCompatActivity {
     settings.setLoadWithOverviewMode(true);
     new Retriever().start();
   }
-
+// runs the app
   private class Retriever extends Thread {
 
     @Override
@@ -58,11 +66,11 @@ public class MainActivity extends AppCompatActivity {
           Random rng = new Random();
           String url = animals.get(rng.nextInt(animals.size())).getImageUrl();
 
-          runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
+          runOnUiThread(() -> {
             contentView.loadUrl(url);
-            }
+            ArrayAdapter<Animal> adapter = new ArrayAdapter<>(MainActivity.this
+                , android.R.layout.simple_dropdown_item_1line, animals);
+            animalSelector.setAdapter(adapter);
           });
 
         } else {
